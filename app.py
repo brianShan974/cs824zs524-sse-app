@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 import random
 import re
+import re
 from utils import are_opposite_directions
 
 
@@ -161,8 +162,7 @@ processor.add_template(
 
 # 使用实例化的对象来处理查询
 def process_query(query):
-    return processor.process(query)
->>>>>>> 42d539b (query_templates)
+    return query_dict.get(query, "Unknown")
 
 
 @app.route("/query")
