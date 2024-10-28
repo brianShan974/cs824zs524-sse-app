@@ -1,13 +1,49 @@
 from flask import Flask, jsonify, render_template, request
 import random
-
+import re
 from utils import are_opposite_directions
 
 
+<<<<<<< HEAD
 query_dict = {
     "dinosaurs": "Dinosaurs ruled the Earth 200 million years ago",
     "asteroids": "Asteroids are rocky bodies orbiting the Sun",
+=======
+query_templates = {
+    r"What is (\d+) plus (\d+)\?": lambda m: str(int(m.group(1)) + int(m.group(2))),
+    r"Which of the following numbers is the largest: (.+)\?": lambda m: str(
+        max(map(int, m.group(1).split(", ")))
+    ),
+>>>>>>> 42d539b (query_templates)
 }
+
+
+def process_query(query):
+    # 遍历模板，查找匹配项
+    for pattern, handler in query_templates.items():
+        match = re.match(pattern, query)
+        if match:
+            # 使用匹配项调用对应的处理函数
+            return handler(match)
+    return "Unknown"  # 如果没有匹配项，返回默认响应
+
+
+class QueryProcessor:
+    def __init__(self):
+        self.templates = {}
+
+    def add_template(self, pattern, handler):
+        """添加新的查询模板"""
+        self.templates[pattern] = handler
+
+    def process(self, query):
+        """根据模板匹配和处理查询"""
+        for pattern, handler in self.templates.items():
+            match = re.match(pattern, query)
+            if match:
+                return handler(match)
+        return "Unknown"
+
 
 app = Flask(__name__)
 
@@ -99,6 +135,7 @@ def submit():
     return render_template("hello.html", name=input_name, age=input_age)
 
 
+<<<<<<< HEAD
 def process_query(query: str):
     if query.startswith("What") or query.startswith("Which"):
         if "name" in query:
@@ -111,6 +148,22 @@ def process_query(query: str):
             return str(int(numbers[2]) + int(numbers[-1][:-1]))
     else:
         return query_dict.get(query, "Unknown")
+=======
+# 实例化并添加模板
+processor = QueryProcessor()
+processor.add_template(
+    r"What is (\d+) plus (\d+)\?", lambda m: str(int(m.group(1)) + int(m.group(2)))
+)
+processor.add_template(
+    r"Which of the following numbers is the largest: (.+)\?",
+    lambda m: str(max(map(int, m.group(1).split(", ")))),
+)
+
+
+# 使用实例化的对象来处理查询
+def process_query(query):
+    return processor.process(query)
+>>>>>>> 42d539b (query_templates)
 
 
 @app.route("/query")
