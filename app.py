@@ -4,17 +4,16 @@ import re
 from utils import are_opposite_directions
 
 
-<<<<<<< HEAD
 query_dict = {
     "dinosaurs": "Dinosaurs ruled the Earth 200 million years ago",
     "asteroids": "Asteroids are rocky bodies orbiting the Sun",
-=======
+}
+
 query_templates = {
     r"What is (\d+) plus (\d+)\?": lambda m: str(int(m.group(1)) + int(m.group(2))),
     r"Which of the following numbers is the largest: (.+)\?": lambda m: str(
         max(map(int, m.group(1).split(", ")))
     ),
->>>>>>> 42d539b (query_templates)
 }
 
 
